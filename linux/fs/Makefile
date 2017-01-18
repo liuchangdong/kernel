@@ -1,4 +1,4 @@
-AR	=gar
+AR	=ar
 AS	=as --32
 CC	=gcc
 LD	=ld -m elf_i386

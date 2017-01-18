@@ -6,7 +6,7 @@
 # unless it's something special (ie not a .c file).
 #
 
-AR	=gar
+AR	=ar
 AS	=as --32
 LD	=ld -m elf_i386
 LDFLAGS	=-s -x
@@ -26,7 +26,7 @@ CPP	=gcc -E -nostdinc -I../include
 
 OBJS  = sched.o system_call.o traps.o asm.o fork.o \
 	panic.o printk.o vsprintf.o sys.o exit.o \
-	signal.o mktime.o
+	signal.o mktime.o segment.o string.o
 
 kernel.o: $(OBJS)
 	$(LD) -r -o kernel.o $(OBJS)
