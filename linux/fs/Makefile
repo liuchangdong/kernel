@@ -3,7 +3,7 @@ AS	=as --32
 CC	=gcc
 LD	=ld -m elf_i386
 CFLAGS	=-Wall -O -m32 -fstrength-reduce -fomit-frame-pointer \
-	-nostdinc -I../include
+	-nostdinc -I../include  -fno-stack-protector
 CPP	=gcc -E -nostdinc -I../include
 
 .c.s:

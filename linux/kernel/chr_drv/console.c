@@ -74,7 +74,7 @@ static unsigned long	top,bottom;
 static unsigned long	state=0;
 static unsigned long	npar,par[NPAR];
 static unsigned long	ques=0;
-static unsigned char	attr=0x07;
+static unsigned char	dattrd=0x07;
 
 static void sysbeep(void);
 
@@ -116,7 +116,7 @@ static void scrup(void)
 				__asm__("cld\n\t"
 					"rep\n\t"
 					"movsl\n\t"
-					"movl _video_num_columns,%1\n\t"
+					"movl video_num_columns,%1\n\t"
 					"rep\n\t"
 					"stosw"
 					::"a" (video_erase_char),
@@ -141,7 +141,7 @@ static void scrup(void)
 			__asm__("cld\n\t"
 				"rep\n\t"
 				"movsl\n\t"
-				"movl _video_num_columns,%%ecx\n\t"
+				"movl video_num_columns,%%ecx\n\t"
 				"rep\n\t"
 				"stosw"
 				::"a" (video_erase_char),
@@ -156,7 +156,7 @@ static void scrup(void)
 		__asm__("cld\n\t"
 			"rep\n\t"
 			"movsl\n\t"
-			"movl _video_num_columns,%%ecx\n\t"
+			"movl video_num_columns,%%ecx\n\t"
 			"rep\n\t"
 			"stosw"
 			::"a" (video_erase_char),
@@ -175,7 +175,7 @@ static void scrdown(void)
 			"rep\n\t"
 			"movsl\n\t"
 			"addl $2,%%edi\n\t"	/* %edi has been decremented by 4 */
-			"movl _video_num_columns,%%ecx\n\t"
+			"movl video_num_columns,%%ecx\n\t"
 			"rep\n\t"
 			"stosw"
 			::"a" (video_erase_char),
@@ -190,7 +190,7 @@ static void scrdown(void)
 			"rep\n\t"
 			"movsl\n\t"
 			"addl $2,%%edi\n\t"	/* %edi has been decremented by 4 */
-			"movl _video_num_columns,%%ecx\n\t"
+			"movl video_num_columns,%%ecx\n\t"
 			"rep\n\t"
 			"stosw"
 			::"a" (video_erase_char),
@@ -302,11 +302,11 @@ void csi_m(void)
 
 	for (i=0;i<=npar;i++)
 		switch (par[i]) {
-			case 0:attr=0x07;break;
-			case 1:attr=0x0f;break;
-			case 4:attr=0x0f;break;
-			case 7:attr=0x70;break;
-			case 27:attr=0x07;break;
+			case 0:dattrd=0x07;break;
+			case 1:dattrd=0x0f;break;
+			case 4:dattrd=0x0f;break;
+			case 7:dattrd=0x70;break;
+			case 27:dattrd=0x07;break;
 		}
 }
 
@@ -458,7 +458,7 @@ void con_write(struct tty_struct * tty)
 						pos -= video_size_row;
 						lf();
 					}
-					__asm__("movb _attr,%%ah\n\t"
+					__asm__("movb %%al,%%ah\n\t"
 						"movw %%ax,%1\n\t"
 						::"a" (c),"m" (*(short *)pos)
 						:) ;

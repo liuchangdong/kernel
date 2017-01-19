@@ -98,14 +98,21 @@ void (*DEVICE_INTR)(void) = NULL;
 #endif
 static void (DEVICE_REQUEST)(void);
 
+#ifndef UNLOCK_BUFFER_FUNC
+#define UNLOCK_BUFFER_FUNC
 extern inline void unlock_buffer(struct buffer_head * bh)
 {
 	if (!bh->b_lock)
 		printk(DEVICE_NAME ": free buffer being unlocked\n");
-	bh->b_lock=0;
+    bh->b_lock=0;
 	wake_up(&bh->b_wait);
 }
+#else
+void unlock_buffer(struct buffer_head * bh);
+#endif
 
+#ifndef END_REQUEST_FUNC
+#define END_REQUEST_FUNC
 extern inline void end_request(int uptodate)
 {
 	DEVICE_OFF(CURRENT->dev);
@@ -123,6 +130,10 @@ extern inline void end_request(int uptodate)
 	CURRENT->dev = -1;
 	CURRENT = CURRENT->next;
 }
+#else
+void end_request(int uptodate);
+#endif
+
 
 #define INIT_REQUEST \
 repeat: \
