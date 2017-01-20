@@ -9,7 +9,7 @@ LD86	=ld86 -0
 
 AS	=as --32
 LD	=ld -m elf_i386  -e startup_32
-LDFLAGS	=-s -x -M
+LDFLAGS	=-m elf_i386 -Ttext 0
 CC	=gcc $(RAMDISK)
 CFLAGS	=-Wall -O -m32 -fstrength-reduce -fomit-frame-pointer  -fno-stack-protector
 CPP	=cpp -nostdinc -Iinclude
@@ -19,7 +19,7 @@ CPP	=cpp -nostdinc -Iinclude
 # This can be either FLOPPY, /dev/xxxx or empty, in which case the
 # default of /dev/hd6 is used by 'build'.
 #
-ROOT_DEV=/dev/hd6
+ROOT_DEV=FLOPPY
 
 ARCHIVES=kernel/kernel.o mm/mm.o fs/fs.o
 DRIVERS =kernel/blk_drv/blk_drv.a kernel/chr_drv/chr_drv.a
@@ -39,6 +39,7 @@ all:	Image
 
 Image: boot/bootsect boot/setup tools/system tools/build
 	tools/build boot/bootsect boot/setup tools/system $(ROOT_DEV) > Image
+	rm tools/kernel -f
 	sync
 
 disk: Image

@@ -11,8 +11,8 @@ AS	=as --32
 LD	=ld -m elf_i386
 LDFLAGS	= -x
 CC	=gcc
-CFLAGS	=-Wall -O -m32 -fstrength-reduce -fomit-frame-pointer \
-	-finline-functions -nostdinc -I../../include
+CFLAGS	=-m32 -Wall -O -g -fstrength-reduce -fomit-frame-pointer  \
+	-finline-functions  -nostdinc -I../../include -mtune=i386
 CPP	=gcc -E -nostdinc -I../../include
 
 .c.s:
@@ -24,7 +24,7 @@ CPP	=gcc -E -nostdinc -I../../include
 	$(CC) $(CFLAGS) \
 	-c -o $*.o $<
 
-OBJS  = ll_rw_blk.o floppy.o hd.o ramdisk.o
+OBJS  = ll_rw_blk.o floppy.o hd.o ramdisk.o blk.o
 
 blk_drv.a: $(OBJS)
 	$(AR) rcs blk_drv.a $(OBJS)
